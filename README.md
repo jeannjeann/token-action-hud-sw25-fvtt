@@ -6,7 +6,7 @@ Token Action HUD for [Sword World 2.5](https://foundryvtt.com/packages/sw25) gam
 
 ## 必須モジュール (Required Modules)
 
-**重要** - ものモジュールは [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core) がインストールされている必要があります。
+**重要** - このモジュールは [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core) がインストールされている必要があります。
 
 **IMPORTANT** - Token Action HUD Sword World 2.5 requires the [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core) module to be installed.
 
