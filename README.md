@@ -10,9 +10,6 @@ Token Action HUD for [Sword World 2.5](https://foundryvtt.com/packages/sw25) gam
 
 **IMPORTANT** - Token Action HUD Sword World 2.5 requires the [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core) module to be installed.
 
-## 推奨モジュール (Recommended Modules)
-Token Action HUD uses the [Color Picker](https://foundryvtt.com/packages/color-picker) library module for its color picker settings.
-
 # サポート (Support)
 
 「Token Action HUD」の使い方　[How to Use Token Action HUD (英語サイト)](https://github.com/Larkinabout/fvtt-token-action-hud-core/wiki/How-to-Use-Token-Action-HUD)
@@ -30,6 +27,8 @@ Pull requests are welcome.
 # License
 
 This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) and this work is licensed under [Foundry Virtual Tabletop EULA - Limited License Agreement for module development](https://foundryvtt.com/article/license/).
+
+本作は、「グループSNE」および「株式会社KADOKAWA」が権利を有する『ソード・ワールド2.0/2.5』の、二次創作です。 (C)GroupSNE (C)KADOKAWA
 
 # CHANGELOG
 
