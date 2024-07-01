@@ -1,0 +1,77 @@
+{
+  "id": "token-action-hud-sw25",
+  "title": "Token Action HUD Sword World 2.5",
+  "description": "Token Action HUD for Sword World 2.5 game system",
+  "authors": [
+    {
+      "name": "Jean.N"
+    }
+  ],
+  "url": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt",
+  "flags": {},
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11.315",
+    "maximum": "12"
+  },
+  "esmodules": [
+    "./scripts/init.js"
+  ],
+  "scripts": [
+  ],
+  "styles": [
+    "./styles/tah-sw25-style.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    },
+    {
+      "lang": "ja",
+      "name": "日本語(Japanese)",
+      "path": "languages/ja.json"
+    }
+  ],
+  "packs": [],
+  "relationships": {
+    "systems": [
+      {
+        "id": "sw25",
+        "type": "system",
+        "compatibility": [
+          {
+            "minimum": "0.8.0",
+            "verified": "0.8.0"
+          }
+        ]
+      }
+    ],
+    "requires": [
+      {
+        "id": "token-action-hud-core",
+        "type": "module",
+        "compatibility": [
+          {
+            "minimum": "1.5.0",
+            "maximum": "1.5",
+            "verified": "1.5.0"
+          }
+        ]
+      }
+    ],
+    "optional": [],
+    "flags": {
+      "optional": []
+    }
+  },
+  "socket": false,
+  "manifest": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/1.0.0/module.json",
+  "download": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/1.0.0/module.zip",
+  "readme": "README.md",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
+}

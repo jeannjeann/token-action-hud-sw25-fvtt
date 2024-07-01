@@ -1,0 +1,32 @@
+{
+  "tokenActionHud": {
+    "sw25": {
+      "battletab": "戦闘タブ",
+      "featuretab": "特技等タブ",
+      "spelltab": "魔法タブ",
+      "itemtab": "所持品タブ",
+      "monsterabilitytab": "魔物能力タブ",
+      "group": "グループ",
+      "battleweapon": "武器（戦闘タブ）",
+      "battlecheck": "判定（戦闘タブ）",
+      "settings": {
+        "displayClickItem": {
+          "hint": "メインアクション（アイコンクリック時の挙動）をHUDに表示する",
+          "name": "メインアクションを表示"    
+        },
+        "displayCheck": {
+          "hint": "判定の直接実行アクションをHUDに表示する",
+          "name": "判定アクションを表示"    
+        },
+        "displayPower": {
+          "hint": "威力の直接実行アクションをHUDに表示する",
+          "name": "威力アクションを表示"    
+        },
+        "displayEffect": {
+          "hint": "バフ・デバフの直接実行アクションをHUDに表示する",
+          "name": "バフ・デバフアクションを表示"    
+        }
+      }
+    }
+  }
+}

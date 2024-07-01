@@ -1,0 +1,32 @@
+{
+  "tokenActionHud": {
+    "sw25": {
+      "battletab": "Battle tab",
+      "featuretab": "Features tab",
+      "spelltab": "Spells tab",
+      "itemtab": "Items tab",
+      "monsterabilitytab": "Monster Ability Tab",
+      "group": "Group",
+      "battleweapon": "Weapon (Battle Tab)",
+      "battlecheck": "Check (Battle Tab)",
+      "settings": {
+        "displayClickItem": {
+          "hint": "Choose whether to display main items on the HUD",
+          "name": "Display Main"    
+        },
+        "displayCheck": {
+          "hint": "Choose whether to display direct check items on the HUD",
+          "name": "Display Check action"    
+        },
+        "displayPower": {
+          "hint": "Choose whether to display direct powerroll items on the HUD",
+          "name": "Display Power action"    
+        },
+        "displayEffect": {
+          "hint": "Choose whether to display effect application items on the HUD",
+          "name": "Display Effect action"    
+        }
+      }
+    }
+  }
+}
