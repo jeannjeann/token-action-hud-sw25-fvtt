@@ -33,6 +33,7 @@ This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 In
 # CHANGELOG
 
 ## 1.1.0
+- MP消費アクションを追加 (Add MP cost action)
 - bug fix
 
 ## 1.0.0

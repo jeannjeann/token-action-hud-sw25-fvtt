@@ -53,6 +53,7 @@ export const ACTION_TYPE = {
   usedice: "SW25.Item.CheckB",
   usepower: "SW25.Item.PowerB",
   useeffect: "SW25.Item.EffectB",
+  mpcost: "SW25.Mp",
 };
 
 /**

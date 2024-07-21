@@ -25,6 +25,10 @@
         "displayEffect": {
           "hint": "Choose whether to display effect application items on the HUD",
           "name": "Display Effect action"    
+        },
+        "displayMP": {
+          "hint": "Choose whether to display direct MP cost items on the HUD",
+          "name": "Display MP action"    
         }
       }
     }

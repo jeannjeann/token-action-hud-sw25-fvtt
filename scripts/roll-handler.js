@@ -133,6 +133,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "utility":
           this.#handleUtilityAction(token, actionId);
           break;
+        case "mpcost":
+          this.#handleMpcostAction(event, actor, actionId);
+          break;
         case "usedice":
           this.#handleUsediceAction(event, actor, actionId);
           break;
@@ -219,6 +222,13 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      * @param {object} actor    The actor
      * @param {string} actionId The action id
      */
+    async #handleMpcostAction(event, actor, actionId) {
+      const item = actor.items.get(actionId);
+      let orgclickitem = item.system.clickitem;
+      item.system.clickitem = "mpcost";
+      await item.roll();
+      item.system.clickitem = orgclickitem;
+    }
     async #handleUsediceAction(event, actor, actionId) {
       const item = actor.items.get(actionId);
       let orgclickitem = item.system.clickitem;

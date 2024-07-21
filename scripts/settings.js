@@ -92,6 +92,23 @@ export function register(coreUpdate) {
       coreUpdate(value);
     },
   });
+  game.settings.register(MODULE.ID, "displayFeatureMP", {
+    name:
+      game.i18n.localize("tokenActionHud.sw25.featuretab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayMP.name"),
+    hint:
+      game.i18n.localize("tokenActionHud.sw25.featuretab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayMP.hint"),
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: (value) => {
+      coreUpdate(value);
+    },
+  });
   game.settings.register(MODULE.ID, "displayFeatureCheck", {
     name:
       game.i18n.localize("tokenActionHud.sw25.featuretab") +
@@ -157,6 +174,23 @@ export function register(coreUpdate) {
     config: true,
     type: Boolean,
     default: false,
+    onChange: (value) => {
+      coreUpdate(value);
+    },
+  });
+  game.settings.register(MODULE.ID, "displaySpellMP", {
+    name:
+      game.i18n.localize("tokenActionHud.sw25.spelltab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayMP.name"),
+    hint:
+      game.i18n.localize("tokenActionHud.sw25.spelltab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayMP.hint"),
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
     onChange: (value) => {
       coreUpdate(value);
     },
