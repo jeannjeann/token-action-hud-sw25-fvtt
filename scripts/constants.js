@@ -47,6 +47,7 @@ export const ACTION_TYPE = {
   combatability: "TYPES.Item.combatability",
   skill: "TYPES.Item.skill",
   raceability: "TYPES.Item.raceability",
+  resource: "TYPES.Item.resource",
   monsterability: "TYPES.Item.monsterability",
   effect: "SW25.Effects",
   utility: "tokenActionHud.utility",
@@ -190,6 +191,11 @@ export const GROUP = {
     name: "TYPES.Item.raceability",
     type: "system",
   },
+  resource: {
+    id: "resource",
+    name: "TYPES.Item.resource",
+    type: "system",
+  },
   monsterability: {
     id: "monsterability",
     name: "TYPES.Item.monsterability",
@@ -252,6 +258,7 @@ export const ITEM_TYPE = {
   combatability: { groupId: "combatability" },
   skill: { groupId: "skill" },
   raceability: { groupId: "raceability" },
+  resource: { groupId: "resource" },
   monsterability: { groupId: "monsterability" },
   effect: { groupId: "effect" },
 };

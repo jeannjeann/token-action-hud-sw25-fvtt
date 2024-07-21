@@ -32,6 +32,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         groups: [
           { ...groups.battle, nestId: "battle_battle" },
           { ...groups.battlecheck, nestId: "battle_battlecheck" },
+          { ...groups.resource, nestId: "battle_resource" },
           { ...groups.battleweapon, nestId: "battle_battleweapon" },
         ],
       },

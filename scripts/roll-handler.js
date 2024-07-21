@@ -38,6 +38,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         "combatability",
         "skill",
         "raceability",
+        "resource",
         "check",
         "battlecheck",
         "monsterability",
@@ -158,6 +159,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           break;
         case "magicpower":
           this.#handleMagicPowerAction(event, actor, actionId);
+          break;
+        case "resource":
+          this.#handleResourceAction(event, actor, actionId);
           break;
         case "effect":
           await this.#toggleEffect(event, actor, actionId);
@@ -323,6 +327,13 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       await onRoll(dataset, actor);
     }
 
+    /**
+     * Handle battle action
+     * @private
+     * @param {object} event    The event
+     * @param {object} actor    The actor
+     * @param {string} actionId The action id
+     */
     async #handleBattleAction(event, actor, actionId) {
       const actorData = actor.system;
       let rolldata, labeldata, pt, apply;
@@ -423,6 +434,27 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       };
 
       await onRoll(dataset, actor);
+    }
+
+    /**
+     * Handle resource action
+     * @private
+     * @param {object} event    The event
+     * @param {object} actor    The actor
+     * @param {string} actionId The action id
+     */
+    async #handleResourceAction(event, actor, actionId) {
+      const [manage, itemId] = actionId.split("-");
+      const item = await actor.items.get(itemId);
+      const itemData = item.system;
+      let quantity;
+      if (manage == "decrease") {
+        quantity = itemData.quantity - 1;
+      }
+      if (manage == "increase") {
+        quantity = itemData.quantity + 1;
+      }
+      await item.update({ "system.quantity": quantity });
     }
 
     /**

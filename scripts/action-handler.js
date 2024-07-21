@@ -67,6 +67,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildSkill("skill", "skill");
       this.#buildBattle("battle", "battle");
       this.#buildMagicPower("magicpower", "magicpower");
+      this.#buildResource("resource", "resource");
       this.#buildEffects();
     }
 
@@ -456,6 +457,86 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       }
 
       this.addActions(actions, groupData);
+    }
+
+    /**
+     * Build resource
+     * @private
+     */
+    async #buildResource(actionType, group) {
+      if (this.items.size === 0) return;
+
+      const actionTypeId = actionType;
+      const inventoryMap = new Map();
+
+      const parentGroupData = { id: "resource", type: "system" };
+      const manage = ["decrease", "increase"];
+      const typeId = "resource";
+
+      for (const [itemId, itemData] of this.items) {
+        const type = itemData.type;
+
+        const typeMap = inventoryMap.get(type) ?? new Map();
+        typeMap.set(itemId, itemData);
+        inventoryMap.set(type, typeMap);
+      }
+
+      for (const [type, typeMap] of inventoryMap) {
+        let groupId = ITEM_TYPE[type]?.groupId;
+        if (groupId != group) continue;
+
+        // Set groups and actions
+        [...typeMap].forEach(([itemId, itemData]) => {
+          // Add groups
+          const groupId = "resource-" + itemId;
+          const groupName = itemData.name;
+          const group = {
+            id: groupId,
+            name: groupName,
+            type: "system-derived",
+            settings: { showTitle: false },
+          };
+          this.addGroup(group, parentGroupData);
+
+          // Add actions
+          const resourceId = itemId;
+          const resourceName = itemData.name;
+          const actionTypeName = coreModule.api.Utils.i18n(
+            ACTION_TYPE[actionTypeId]
+          );
+          const resourceListName = `${
+            actionTypeName ? `${actionTypeName}: ` : ""
+          }${resourceName}`;
+          const resourceEncodedValue = [actionTypeId, resourceId].join(
+            this.delimiter
+          );
+          const resourcegroup = { id: groupId, type: "system-derived" };
+          const itemQuantity = `${itemData.system.quantity}`;
+          const info1 = { text: resourceName, title: "baseitem" };
+
+          const actions = [];
+          for (let i = 0; i < manage.length; i++) {
+            let id = manage[i] + "-" + resourceId;
+            let name;
+            if (manage[i] == "decrease") name = "-";
+            if (manage[i] == "increase") name = "+";
+            let listName = `${resourceName ? `${resourceName}: ` : ""}${
+              manage[i]
+            }`;
+            let encodedValue = [typeId, id].join(this.delimiter);
+            actions.push({ id, name, listName, encodedValue });
+          }
+          actions.push({
+            id: resourceId,
+            name: itemQuantity,
+            listName: resourceListName,
+            encodedValue: resourceEncodedValue,
+            info1,
+            cssClass: "active",
+          });
+          this.addActions(actions, resourcegroup);
+        });
+      }
     }
 
     /**
