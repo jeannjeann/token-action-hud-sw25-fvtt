@@ -163,6 +163,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "resource":
           this.#handleResourceAction(event, actor, actionId);
           break;
+        case "combatcontrol":
+          this.#handleCombatControlAction(event, token, actionId);
+          break;
         case "effect":
           await this.#toggleEffect(event, actor, actionId);
           break;
@@ -455,6 +458,44 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         quantity = itemData.quantity + 1;
       }
       await item.update({ "system.quantity": quantity });
+    }
+
+    /**
+     * Handle combatcontrol action
+     * @private
+     * @param {object} event    The event
+     * @param {object} token    The token
+     * @param {string} actionId The action id
+     */
+    async #handleCombatControlAction(event, token, actionId) {
+      switch (actionId) {
+        case "startturn":
+          const combat = game.combat;
+          const combatant = combat.getCombatantByToken(token.id);
+          const tokenInitiative = combatant.initiative;
+          const currentCombatant = combat.turns[combat.turn];
+          const currentInitiative = currentCombatant.initiative;
+
+          const turnIndex = combat.turns.findIndex(
+            (c) => c.tokenId === token.id
+          );
+          if (turnIndex === -1) return;
+          await combat.update({ turn: turnIndex });
+
+          const initiative = currentInitiative;
+          await combatant.update({ initiative: initiative });
+
+          break;
+        case "endturn":
+          if (game.combat?.current?.tokenId === token.id) {
+            await game.combat?.nextTurn();
+          }
+          break;
+        case "popendturn":
+          const module = game.modules.get("just-popcorn-initiative");
+          module.api.showSelectionWindowOrPassTurn();
+          break;
+      }
     }
 
     /**

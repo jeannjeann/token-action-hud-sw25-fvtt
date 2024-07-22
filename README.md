@@ -35,6 +35,8 @@ This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 In
 ## 1.1.0
 - MP消費アクションを追加 (Add MP cost action)
 - リソース操作アクションを追加 (Add manage resource action)
+- ターン操作アクションを追加 (Add turn control action)
+- 「Just - Popcorn Initiative」モジュールに対応 (Support "Just - Popcorn Initiative" module)
 - bug fix
 
 ## 1.0.0

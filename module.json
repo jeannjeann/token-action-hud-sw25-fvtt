@@ -43,7 +43,7 @@
         "type": "system",
         "compatibility": [
           {
-            "minimum": "0.9.0",
+            "minimum": "0.8.0",
             "verified": "0.9.0"
           }
         ]

@@ -68,6 +68,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildBattle("battle", "battle");
       this.#buildMagicPower("magicpower", "magicpower");
       this.#buildResource("resource", "resource");
+      this.#buildCombatControl("combatcontrol", "combatcontrol");
       this.#buildEffects();
     }
 
@@ -85,6 +86,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildInventory("fairy", "fairy");
       this.#buildInventory("druid", "druid");
       this.#buildInventory("daemon", "daemon");
+      this.#buildCombatControl("combatcontrol", "combatcontrol");
       this.#buildEffects();
     }
 
@@ -537,6 +539,68 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           this.addActions(actions, resourcegroup);
         });
       }
+    }
+
+    /**
+     * Build resource
+     * @private
+     */
+    async #buildCombatControl(actionType, group) {
+      const actionTypeId = actionType;
+      const actionTypeName = coreModule.api.Utils.i18n(
+        ACTION_TYPE[actionTypeId]
+      );
+      const groupId = group;
+      const groupData = { id: groupId, type: "system" };
+      const actions = [];
+
+      if (this.token?.inCombat) {
+        let popcorn =
+          game.modules.has("just-popcorn-initiative") &&
+          game.modules.get("just-popcorn-initiative").active;
+
+        if (popcorn) {
+          if (game.combat?.current?.tokenId !== this.token?.id) {
+            const id = "startturn";
+            const name = coreModule.api.Utils.i18n(
+              "tokenActionHud.sw25.startturn"
+            );
+            const listName = actionTypeName + " : " + name;
+            const encodedValue = [actionTypeId, id].join(this.delimiter);
+            actions.push({ id, name, listName, encodedValue });
+          }
+          if (game.combat?.current?.tokenId === this.token?.id) {
+            const id = "popendturn";
+            const name = coreModule.api.Utils.i18n(
+              "tokenActionHud.sw25.endturn"
+            );
+            const listName = actionTypeName + " : " + name;
+            const encodedValue = [actionTypeId, id].join(this.delimiter);
+            actions.push({ id, name, listName, encodedValue });
+          }
+        } else {
+          if (game.combat?.current?.tokenId !== this.token?.id) {
+            const id = "startturn";
+            const name = coreModule.api.Utils.i18n(
+              "tokenActionHud.sw25.startturn"
+            );
+            const listName = actionTypeName + " : " + name;
+            const encodedValue = [actionTypeId, id].join(this.delimiter);
+            actions.push({ id, name, listName, encodedValue });
+          }
+          if (game.combat?.current?.tokenId === this.token?.id) {
+            const id = "endturn";
+            const name = coreModule.api.Utils.i18n(
+              "tokenActionHud.sw25.endturn"
+            );
+            const listName = actionTypeName + " : " + name;
+            const encodedValue = [actionTypeId, id].join(this.delimiter);
+            actions.push({ id, name, listName, encodedValue });
+          }
+        }
+      }
+
+      this.addActions(actions, groupData);
     }
 
     /**

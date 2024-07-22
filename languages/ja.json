@@ -9,6 +9,9 @@
       "group": "グループ",
       "battleweapon": "武器（戦闘タブ）",
       "battlecheck": "判定（戦闘タブ）",
+      "combatcontrol": "戦闘操作",
+      "startturn": "ターン開始",
+      "endturn": "ターン終了",
       "settings": {
         "displayClickItem": {
           "hint": "メインアクション（アイコンクリック時の挙動）をHUDに表示する",

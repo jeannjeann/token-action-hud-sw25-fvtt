@@ -9,6 +9,9 @@
       "group": "Group",
       "battleweapon": "Weapon (Battle Tab)",
       "battlecheck": "Check (Battle Tab)",
+      "combatcontrol": "Combat Controls",
+      "startturn": "Start Turn",
+      "endturn": "End Turn",
       "settings": {
         "displayClickItem": {
           "hint": "Choose whether to display main items on the HUD",

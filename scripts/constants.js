@@ -50,6 +50,7 @@ export const ACTION_TYPE = {
   resource: "TYPES.Item.resource",
   monsterability: "TYPES.Item.monsterability",
   effect: "SW25.Effects",
+  combatcontrol: "tokenActionHud.sw25.combatcontrol",
   utility: "tokenActionHud.utility",
   usedice: "SW25.Item.CheckB",
   usepower: "SW25.Item.PowerB",
@@ -216,6 +217,11 @@ export const GROUP = {
     name: "SW25.Effect.Passive",
     type: "system",
   },
+  combatControl: {
+    id: "combatcontrol",
+    name: "tokenActionHud.sw25.combatcontrol",
+    type: "system",
+  },
   token: {
     id: "token",
     name: "tokenActionHud.token",
@@ -259,6 +265,7 @@ export const ITEM_TYPE = {
   skill: { groupId: "skill" },
   raceability: { groupId: "raceability" },
   resource: { groupId: "resource" },
+  combatcontrol: { groupId: "combatcontrol" },
   monsterability: { groupId: "monsterability" },
   effect: { groupId: "effect" },
 };
