@@ -42,6 +42,7 @@ export const ACTION_TYPE = {
   alchemytech: "TYPES.Item.alchemytech",
   phasearea: "TYPES.Item.phasearea",
   tactics: "TYPES.Item.tactics",
+  otherfeature: "TYPES.Item.otherfeature",
   check: "TYPES.Item.check",
   battlecheck: "tokenActionHud.sw25.battlecheck",
   combatability: "TYPES.Item.combatability",
@@ -168,6 +169,11 @@ export const GROUP = {
     name: "TYPES.Item.tactics",
     type: "system",
   },
+  otherfeature: {
+    id: "otherfeature",
+    name: "TYPES.Item.otherfeature",
+    type: "system",
+  },
   check: {
     id: "check",
     name: "TYPES.Item.check",
@@ -265,6 +271,7 @@ export const ITEM_TYPE = {
   alchemytech: { groupId: "alchemytech" },
   phasearea: { groupId: "phasearea" },
   tactics: { groupId: "tactics" },
+  otherfeature: { groupId: "otherfeature" },
   check: { groupId: "check" },
   battlecheck: { groupId: "battlecheck" },
   combatability: { groupId: "combatability" },

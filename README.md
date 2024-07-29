@@ -34,6 +34,7 @@ This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 In
 
 ## 1.2.0
 - 戦利品ロール対応（Support loot roll）
+- 「その他の特技」対応（Support other features）
 
 ## 1.1.0
 - MP消費アクションを追加 (Add MP cost action)

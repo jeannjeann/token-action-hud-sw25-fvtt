@@ -35,6 +35,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         "alchemytech",
         "phasearea",
         "tactics",
+        "otherfeature",
         "combatability",
         "skill",
         "raceability",
@@ -121,6 +122,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "alchemytech":
         case "phasearea":
         case "tactics":
+        case "otherfeature":
         case "combatability":
         case "skill":
         case "raceability":

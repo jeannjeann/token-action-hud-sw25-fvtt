@@ -60,6 +60,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildInventory("alchemytech", "alchemytech");
       this.#buildInventory("phasearea", "phasearea");
       this.#buildInventory("tactics", "tactics");
+      this.#buildInventory("otherfeature", "otherfeature");
       this.#buildInventory("combatability", "combatability");
       this.#buildInventory("raceability", "raceability");
       this.#buildCheck("check", "check");
@@ -651,6 +652,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "alchemytech":
         case "phasearea":
         case "tactics":
+        case "otherfeature":
           this.displayClickItem = Utils.getSetting("displayFeatureClickItem");
           this.displayMP = Utils.getSetting("displayFeatureMP");
           this.displayCheck = Utils.getSetting("displayFeatureCheck");
@@ -743,25 +745,30 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
 
             // Add direct action
             if (itemData.system?.mpcost && baseaction) {
-              const usediceActionTypeName = coreModule.api.Utils.i18n(
-                ACTION_TYPE["mpcost"]
-              );
-              const usediceListName = `${
-                usediceActionTypeName ? `${usediceActionTypeName}: ` : ""
-              }${name}`;
-              const usediceEncodedValue = ["mpcost", id].join(this.delimiter);
-              const extraname = coreModule.api.Utils.i18n(
-                ACTION_TYPE["mpcost"]
-              );
-              const info1 = { text: `${name}`, title: "baseitem" };
-              let usediceAction = {
-                id: `${id}-mpcost`,
-                name: extraname,
-                listName: usediceListName,
-                encodedValue: usediceEncodedValue,
-                info1,
-              };
-              if (this.displayMP) action.push(usediceAction);
+              if (
+                itemData.system.basempcost != 0 &&
+                itemData.system.basempcost != null
+              ) {
+                const usediceActionTypeName = coreModule.api.Utils.i18n(
+                  ACTION_TYPE["mpcost"]
+                );
+                const usediceListName = `${
+                  usediceActionTypeName ? `${usediceActionTypeName}: ` : ""
+                }${name}`;
+                const usediceEncodedValue = ["mpcost", id].join(this.delimiter);
+                const extraname = coreModule.api.Utils.i18n(
+                  ACTION_TYPE["mpcost"]
+                );
+                const info1 = { text: `${name}`, title: "baseitem" };
+                let usediceAction = {
+                  id: `${id}-mpcost`,
+                  name: extraname,
+                  listName: usediceListName,
+                  encodedValue: usediceEncodedValue,
+                  info1,
+                };
+                if (this.displayMP) action.push(usediceAction);
+              }
             }
 
             if (itemData.system?.usedice && baseaction) {

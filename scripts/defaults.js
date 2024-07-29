@@ -49,6 +49,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           { ...groups.alchemytech, nestId: "feature_alchemytech" },
           { ...groups.phasearea, nestId: "feature_phasearea" },
           { ...groups.tactics, nestId: "feature_tactics" },
+          { ...groups.otherfeature, nestId: "feature_otherfeature" },
         ],
       },
       {
