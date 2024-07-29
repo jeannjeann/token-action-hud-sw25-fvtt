@@ -166,6 +166,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "combatcontrol":
           this.#handleCombatControlAction(event, token, actionId);
           break;
+        case "loot":
+          this.#handleLootAction(event, token, actionId);
+          break;
         case "effect":
           await this.#toggleEffect(event, actor, actionId);
           break;
@@ -496,6 +499,17 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           module.api.showSelectionWindowOrPassTurn();
           break;
       }
+    }
+
+    /**
+     * Handle loot action
+     * @private
+     * @param {object} event    The event
+     * @param {object} actor    The actor
+     * @param {string} actionId The action id
+     */
+    async #handleLootAction(event, actor, actionId) {
+      await game.sw25.lootRoll(actor);
     }
 
     /**

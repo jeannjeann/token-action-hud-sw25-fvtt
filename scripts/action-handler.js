@@ -87,6 +87,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildInventory("druid", "druid");
       this.#buildInventory("daemon", "daemon");
       this.#buildCombatControl("combatcontrol", "combatcontrol");
+      this.#buildLoot("loot", "loot");
       this.#buildEffects();
     }
 
@@ -542,7 +543,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
     }
 
     /**
-     * Build resource
+     * Build combat control
      * @private
      */
     async #buildCombatControl(actionType, group) {
@@ -600,6 +601,30 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         }
       }
 
+      this.addActions(actions, groupData);
+    }
+
+    /**
+     * Build loot
+     * @private
+     */
+    async #buildLoot(actionType, group) {
+      const actionTypeId = actionType;
+      const actionTypeName = coreModule.api.Utils.i18n(
+        ACTION_TYPE[actionTypeId]
+      );
+      const groupId = group;
+      const groupData = {
+        id: groupId,
+        type: "system",
+        settings: { showTitle: false },
+      };
+      const actions = [];
+      const id = "loot";
+      const name = coreModule.api.Utils.i18n("SW25.Monster.Loot");
+      const listName = actionTypeName + " : " + name;
+      const encodedValue = [actionTypeId, id].join(this.delimiter);
+      actions.push({ id, name, listName, encodedValue });
       this.addActions(actions, groupData);
     }
 
