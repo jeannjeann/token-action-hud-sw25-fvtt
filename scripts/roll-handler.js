@@ -511,7 +511,6 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      * @param {string} actionId The action id
      */
     async #handleLootAction(event, actor, actionId) {
-      console.log(actor.actor);
       await game.sw25.lootRoll(actor.actor);
     }
 
