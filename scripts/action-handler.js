@@ -70,6 +70,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildMagicPower("magicpower", "magicpower");
       this.#buildResource("resource", "resource");
       this.#buildCombatControl("combatcontrol", "combatcontrol");
+      this.#buildUtility("utility", "utility");
       this.#buildEffects();
     }
 
@@ -623,6 +624,29 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       const actions = [];
       const id = "loot";
       const name = coreModule.api.Utils.i18n("SW25.Monster.Loot");
+      const listName = actionTypeName + " : " + name;
+      const encodedValue = [actionTypeId, id].join(this.delimiter);
+      actions.push({ id, name, listName, encodedValue });
+      this.addActions(actions, groupData);
+    }
+
+    /**
+     * Build utility
+     * @private
+     */
+    async #buildUtility(actionType, group) {
+      const actionTypeId = actionType;
+      const actionTypeName = coreModule.api.Utils.i18n(
+        ACTION_TYPE[actionTypeId]
+      );
+      const groupId = group;
+      const groupData = {
+        id: groupId,
+        type: "system",
+      };
+      const actions = [];
+      const id = "utility";
+      const name = coreModule.api.Utils.i18n("SW25.Ability.Growth");
       const listName = actionTypeName + " : " + name;
       const encodedValue = [actionTypeId, id].join(this.delimiter);
       actions.push({ id, name, listName, encodedValue });

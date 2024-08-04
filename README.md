@@ -32,6 +32,10 @@ This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 In
 
 # CHANGELOG
 
+## 1.3.0
+- 成長ロール対応（Support growth dice）
+- bug fix
+
 ## 1.2.0
 - 戦利品ロール対応（Support loot roll）
 - 「その他の特技」対応（Support other features）

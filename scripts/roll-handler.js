@@ -134,7 +134,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           this.#handleCheckAction(event, actor, actionId);
           break;
         case "utility":
-          this.#handleUtilityAction(token, actionId);
+          this.#handleUtilityAction(event, token, actionId);
           break;
         case "mpcost":
           this.#handleMpcostAction(event, actor, actionId);
@@ -214,17 +214,12 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
     /**
      * Handle utility action
      * @private
+     * @param {object} event    The event
      * @param {object} token    The token
      * @param {string} actionId The action id
      */
-    async #handleUtilityAction(token, actionId) {
-      switch (actionId) {
-        case "endTurn":
-          if (game.combat?.current?.tokenId === token.id) {
-            await game.combat?.nextTurn();
-          }
-          break;
-      }
+    async #handleUtilityAction(event, token, actionId) {
+      await game.sw25.growthCheck(token.actor);
     }
 
     /**

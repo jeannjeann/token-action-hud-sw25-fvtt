@@ -281,5 +281,6 @@ export const ITEM_TYPE = {
   combatcontrol: { groupId: "combatcontrol" },
   loot: { groupId: "loot" },
   monsterability: { groupId: "monsterability" },
+  utility: { groupId: "utility" },
   effect: { groupId: "effect" },
 };
