@@ -578,9 +578,15 @@ async function onRoll(dataset, actor) {
     if (roll.terms[0].total == 2) chatFumble = 1;
 
     let chatapply = dataset.apply;
+    let chatspell = dataset.spell;
     chatData.flags = {
       total: roll.total,
+      orgtotal: roll.total,
+      formula: roll.formula,
+      rolls: roll,
+      tooltip: await roll.getTooltip(),
       apply: chatapply,
+      spell: chatspell,
     };
 
     chatData.content = await renderTemplate(
@@ -592,6 +598,7 @@ async function onRoll(dataset, actor) {
         fumble: chatFumble,
         total: roll.total,
         apply: chatapply,
+        spell: chatspell,
       }
     );
 

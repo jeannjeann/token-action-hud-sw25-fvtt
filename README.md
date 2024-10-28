@@ -32,6 +32,10 @@ This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 In
 
 # CHANGELOG
 
+## 1.4.0
+- 「SW2.5 for FVTT v0.10.4」のロール結果微調整に対応（Supports adjustment of roll results for Sword World 2.5 Game system v0.10.4）
+- bug fix
+
 ## 1.3.0
 - 成長ロール対応（Support growth dice）
 - bug fix
