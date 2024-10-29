@@ -256,25 +256,28 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
     async #handleMonUsediceAction(event, actor, actionId, actionTypeId) {
       const item = actor.items.get(actionId);
       const itemData = item.system;
-      let roll, label, apply;
+      let roll, label, apply, checktype;
       switch (actionTypeId) {
         case "usedice1":
           roll = itemData.checkformula1 + "+" + itemData.checkbase1;
           label = item.name + " (" + itemData.label1 + ")";
           apply = itemData.applycheck1;
+          checktype = itemData.checkTypesButton.join(",");
           break;
         case "usedice2":
           roll = itemData.checkformula2 + "+" + itemData.checkbase2;
           label = item.name + " (" + itemData.label2 + ")";
           apply = itemData.applycheck2;
+          checktype = itemData.checkTypesButton.join(",");
           break;
         case "usedice3":
           roll = itemData.checkformula3 + "+" + itemData.checkbase3;
           label = item.name + " (" + itemData.label3 + ")";
           apply = itemData.applycheck3;
+          checktype = itemData.checkTypesButton.join(",");
           break;
       }
-      const dataset = { roll, label, apply };
+      const dataset = { roll, label, apply, checktype };
       await onRoll(dataset, actor);
     }
 
@@ -326,6 +329,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         roll: rolldata,
         label: labeldata,
         apply: "-",
+        checktype: "",
       };
       await onRoll(dataset, actor);
     }
@@ -339,7 +343,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      */
     async #handleBattleAction(event, actor, actionId) {
       const actorData = actor.system;
-      let rolldata, labeldata, pt, apply;
+      let rolldata, labeldata, pt, apply, checktype, powertype;
       switch (actionId) {
         case "hit":
           rolldata = actorData.itemhitformula + "+" + actorData.itemhitbase;
@@ -348,7 +352,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
             " (" +
             game.i18n.localize("SW25.Item.Weapon.Hit") +
             ")";
-          apply = "-";
+          apply = actorData.itemapplycheck;
+          checktype = actorData.itemchecktype.join(",");
+          powertype = "";
           break;
         case "power":
           rolldata = actorData.itempowerformula;
@@ -358,12 +364,16 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
             game.i18n.localize("SW25.Item.Power") +
             ")";
           pt = actorData.itempowertable;
-          apply = "on";
+          apply = actorData.itemapplypower;
+          checktype = "";
+          powertype = actorData.itempowertype.join(",");
           break;
         case "dodge":
           rolldata = "2d6+" + actorData.dodgebase;
           labeldata = game.i18n.localize("SW25.Item.Armor.Dodge");
           apply = "-";
+          checktype = "";
+          powertype = "";
           break;
       }
       const dataset = {
@@ -371,6 +381,8 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         label: labeldata,
         pt,
         apply,
+        checktype,
+        powertype,
       };
 
       if (actionId == "power") await onPowerRoll(dataset, actor);
@@ -386,47 +398,55 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
     async #handleMagicPowerAction(event, actor, actionId) {
       const spelltype = actionId.split("-")[0];
       const actorData = actor.system;
-      let rolldata, labeldata, pt, apply;
+      let rolldata, labeldata, pt, apply, checktype;
       switch (spelltype) {
         case "sorcerer":
           rolldata = "2d6+" + actorData.attributes.scpower;
           labeldata = game.i18n.localize("SW25.Item.Spell.Sorcerer");
           apply = "-";
+          checktype = "";
           break;
         case "conjurer":
           rolldata = "2d6+" + actorData.attributes.cnpower;
           labeldata = game.i18n.localize("SW25.Item.Spell.Conjurer");
           apply = "-";
+          checktype = "";
           break;
         case "wizard":
           rolldata = "2d6+" + actorData.attributes.wzpower;
           labeldata = game.i18n.localize("SW25.Item.Spell.Wizard");
           apply = "-";
+          checktype = "";
           break;
         case "priest":
           rolldata = "2d6+" + actorData.attributes.prpower;
           labeldata = game.i18n.localize("SW25.Item.Spell.Priest");
           apply = "-";
+          checktype = "";
           break;
         case "magitech":
           rolldata = "2d6+" + actorData.attributes.mtpower;
           labeldata = game.i18n.localize("SW25.Item.Spell.Magitech");
           apply = "-";
+          checktype = "";
           break;
         case "fairy":
           rolldata = "2d6+" + actorData.attributes.frpower;
           labeldata = game.i18n.localize("SW25.Item.Spell.Fairy");
           apply = "-";
+          checktype = "";
           break;
         case "druid":
           rolldata = "2d6+" + actorData.attributes.drpower;
           labeldata = game.i18n.localize("SW25.Item.Spell.Druid");
           apply = "-";
+          checktype = "";
           break;
         case "daemon":
           rolldata = "2d6+" + actorData.attributes.dmpower;
           labeldata = game.i18n.localize("SW25.Item.Spell.Daemon");
           apply = "-";
+          checktype = "";
           break;
       }
       const dataset = {
@@ -434,6 +454,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         label: labeldata,
         pt,
         apply,
+        checktype,
       };
 
       await onRoll(dataset, actor);
@@ -558,6 +579,7 @@ async function onRoll(dataset, actor) {
   // Handle rolls that supply the formula directly.
   if (dataset.roll) {
     const rollData = actor.getRollData();
+    const checktype = dataset.checktype.split(",");
 
     let roll = new Roll(dataset.roll, rollData);
     await roll.evaluate();
@@ -587,6 +609,7 @@ async function onRoll(dataset, actor) {
       tooltip: await roll.getTooltip(),
       apply: chatapply,
       spell: chatspell,
+      checktype: checktype,
     };
 
     chatData.content = await renderTemplate(
@@ -599,6 +622,7 @@ async function onRoll(dataset, actor) {
         total: roll.total,
         apply: chatapply,
         spell: chatspell,
+        checktype: checktype,
       }
     );
 
@@ -611,6 +635,7 @@ async function onRoll(dataset, actor) {
 // _onPowerRoll function
 async function onPowerRoll(dataset, actor) {
   const formula = dataset.roll;
+  const powertype = dataset.powertype.split(",");
   const powertable = dataset.pt;
 
   let roll = await game.sw25.powerRoll(formula, powertable);
@@ -700,6 +725,7 @@ async function onPowerRoll(dataset, actor) {
     showhalf: showhalf,
     shownoc: shownoc,
     apply: chatapply,
+    powertype: powertype,
   };
 
   chatData.content = await renderTemplate(
@@ -722,6 +748,7 @@ async function onPowerRoll(dataset, actor) {
       showhalf: showhalf,
       shownoc: shownoc,
       apply: chatapply,
+      powertype: powertype,
     }
   );
 
