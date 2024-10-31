@@ -579,7 +579,7 @@ async function onRoll(dataset, actor) {
   // Handle rolls that supply the formula directly.
   if (dataset.roll) {
     const rollData = actor.getRollData();
-    const checktype = dataset.checktype.split(",");
+    const checktype = dataset.checktype ? dataset.checktype.split(",") : "";
 
     let roll = new Roll(dataset.roll, rollData);
     await roll.evaluate();
@@ -635,7 +635,7 @@ async function onRoll(dataset, actor) {
 // _onPowerRoll function
 async function onPowerRoll(dataset, actor) {
   const formula = dataset.roll;
-  const powertype = dataset.powertype.split(",");
+  const powertype = dataset.powertype ? dataset.powertype.split(",") : "";
   const powertable = dataset.pt;
 
   let roll = await game.sw25.powerRoll(formula, powertable);

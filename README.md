@@ -32,6 +32,9 @@ This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 In
 
 # CHANGELOG
 
+## 1.4.2
+- bug fix
+
 ## 1.4.1
 - Support Sword World 2.5 Game system v0.10.5
 - bug fix
