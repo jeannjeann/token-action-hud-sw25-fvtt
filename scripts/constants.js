@@ -58,6 +58,7 @@ export const ACTION_TYPE = {
   usepower: "SW25.Item.PowerB",
   useeffect: "SW25.Item.EffectB",
   mpcost: "SW25.Mp",
+  resourcecost: "SW25.Cost",
 };
 
 /**

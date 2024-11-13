@@ -9,7 +9,7 @@
   ],
   "url": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt",
   "flags": {},
-  "version": "1.4.2",
+  "version": "1.5.0",
   "compatibility": {
     "minimum": "11",
     "verified": "11.315",
@@ -68,8 +68,8 @@
     }
   },
   "socket": false,
-  "manifest": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/1.4.2/module.json",
-  "download": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/1.4.2/module.zip",
+  "manifest": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/1.5.0/module.json",
+  "download": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/1.5.0/module.zip",
   "readme": "README.md",
   "protected": false,
   "coreTranslation": false,

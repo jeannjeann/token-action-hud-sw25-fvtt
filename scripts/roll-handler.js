@@ -139,6 +139,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "mpcost":
           this.#handleMpcostAction(event, actor, actionId);
           break;
+        case "resourcecost":
+          this.#handleResourcecostAction(event, actor, actionId);
+          break;
         case "usedice":
           this.#handleUsediceAction(event, actor, actionId);
           break;
@@ -229,13 +232,6 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      * @param {object} actor    The actor
      * @param {string} actionId The action id
      */
-    async #handleMpcostAction(event, actor, actionId) {
-      const item = actor.items.get(actionId);
-      let orgclickitem = item.system.clickitem;
-      item.system.clickitem = "mpcost";
-      await item.roll();
-      item.system.clickitem = orgclickitem;
-    }
     async #handleUsediceAction(event, actor, actionId) {
       const item = actor.items.get(actionId);
       let orgclickitem = item.system.clickitem;
@@ -252,6 +248,20 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
     }
     async #handleUseeffectAction(event, actor, actionId) {
       await onApplyEffect(actor, actionId);
+    }
+    async #handleMpcostAction(event, actor, actionId) {
+      const item = actor.items.get(actionId);
+      let orgclickitem = item.system.clickitem;
+      item.system.clickitem = "mpcost";
+      await item.roll();
+      item.system.clickitem = orgclickitem;
+    }
+    async #handleResourcecostAction(event, actor, actionId) {
+      const item = actor.items.get(actionId);
+      let orgclickitem = item.system.clickitem;
+      item.system.clickitem = "rescost";
+      await item.roll();
+      item.system.clickitem = orgclickitem;
     }
     async #handleMonUsediceAction(event, actor, actionId, actionTypeId) {
       const item = actor.items.get(actionId);
@@ -343,7 +353,14 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      */
     async #handleBattleAction(event, actor, actionId) {
       const actorData = actor.system;
-      let rolldata, labeldata, pt, apply, checktype, powertype;
+      let rolldata,
+        labeldata,
+        pt,
+        apply,
+        checktype,
+        powertype,
+        resuse,
+        resusequantity;
       switch (actionId) {
         case "hit":
           rolldata = actorData.itemhitformula + "+" + actorData.itemhitbase;
@@ -355,6 +372,8 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           apply = actorData.itemapplycheck;
           checktype = actorData.itemchecktype.join(",");
           powertype = "";
+          resuse = actorData.resuse;
+          resusequantity = actorData.resusequantity;
           break;
         case "power":
           rolldata = actorData.itempowerformula;
@@ -367,6 +386,8 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           apply = actorData.itemapplypower;
           checktype = "";
           powertype = actorData.itempowertype.join(",");
+          resuse = "";
+          resusequantity = "";
           break;
         case "dodge":
           rolldata = "2d6+" + actorData.dodgebase;
@@ -374,6 +395,8 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           apply = "-";
           checktype = "";
           powertype = "";
+          resuse = "";
+          resusequantity = "";
           break;
       }
       const dataset = {
@@ -383,6 +406,8 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         apply,
         checktype,
         powertype,
+        resuse,
+        resusequantity,
       };
 
       if (actionId == "power") await onPowerRoll(dataset, actor);
@@ -586,6 +611,33 @@ async function onRoll(dataset, actor) {
 
     let label = dataset.label ? `${dataset.label}` : "";
 
+    let chatresuse;
+    if (dataset.resuse) {
+      const resuseid = dataset.resuse;
+      const resusequantity = dataset.resusequantity;
+      const resuseitem = actor.items.get(resuseid);
+      const resuseitemquantity = resuseitem.system.quantity;
+      const remainingquantity = resuseitemquantity - resusequantity;
+      const min = resuseitem.system.qmin;
+
+      if (resuseitem) {
+        if (resuseitemquantity < resusequantity) {
+          ui.notifications.warn(
+            game.i18n.localize("SW25.Item.Noresquantitiywarn") + resuseitem.name
+          );
+          return;
+        }
+        if (remainingquantity < min) {
+          ui.notifications.warn(
+            game.i18n.localize("SW25.Item.Noresquantitiywarn") + resuseitem.name
+          );
+          return;
+        }
+        resuseitem.update({ "system.quantity": remainingquantity });
+        chatresuse = `<div style="text-align: right;">${resuseitem.name}: ${resuseitemquantity} >>> ${remainingquantity}</div>`;
+      }
+    }
+
     let chatData = {
       speaker: ChatMessage.getSpeaker({ actor: actor }),
       flavor: label,
@@ -623,6 +675,7 @@ async function onRoll(dataset, actor) {
         apply: chatapply,
         spell: chatspell,
         checktype: checktype,
+        resusetext: chatresuse,
       }
     );
 

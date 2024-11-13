@@ -667,6 +667,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           this.displayCheck = Utils.getSetting("displayBattleCheck");
           this.displayPower = Utils.getSetting("displayBattlePower");
           this.displayEffect = Utils.getSetting("displayBattleEffect");
+          this.displayRescost = Utils.getSetting("displayBattleRescost");
           break;
         case "raceability":
         case "combatability":
@@ -705,6 +706,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           this.displayCheck = Utils.getSetting("displayItemCheck");
           this.displayPower = Utils.getSetting("displayItemPower");
           this.displayEffect = Utils.getSetting("displayItemEffect");
+          this.displayRescost = Utils.getSetting("displayItemRescost");
           break;
       }
 
@@ -863,6 +865,35 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
                 info1,
               };
               if (this.displayEffect) action.push(useeffectAction);
+            }
+
+            if (itemData.system?.resuse != "-" && baseaction) {
+              if (
+                itemData.system.resusequantity != 0 &&
+                itemData.system.resusequantity != null
+              ) {
+                const usediceActionTypeName = coreModule.api.Utils.i18n(
+                  ACTION_TYPE["resourcecost"]
+                );
+                const usediceListName = `${
+                  usediceActionTypeName ? `${usediceActionTypeName}: ` : ""
+                }${name}`;
+                const usediceEncodedValue = ["resourcecost", id].join(
+                  this.delimiter
+                );
+                const extraname = coreModule.api.Utils.i18n(
+                  ACTION_TYPE["resourcecost"]
+                );
+                const info1 = { text: `${name}`, title: "baseitem" };
+                let usediceAction = {
+                  id: `${id}-resourcecost`,
+                  name: extraname,
+                  listName: usediceListName,
+                  encodedValue: usediceEncodedValue,
+                  info1,
+                };
+                if (this.displayRescost) action.push(usediceAction);
+              }
             }
 
             return action;

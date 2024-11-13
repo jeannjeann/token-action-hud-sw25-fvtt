@@ -35,7 +35,7 @@ export function register(coreUpdate) {
     scope: "client",
     config: true,
     type: Boolean,
-    default: true,
+    default: false,
     onChange: (value) => {
       coreUpdate(value);
     },
@@ -52,7 +52,7 @@ export function register(coreUpdate) {
     scope: "client",
     config: true,
     type: Boolean,
-    default: true,
+    default: false,
     onChange: (value) => {
       coreUpdate(value);
     },
@@ -70,6 +70,23 @@ export function register(coreUpdate) {
     config: true,
     type: Boolean,
     default: false,
+    onChange: (value) => {
+      coreUpdate(value);
+    },
+  });
+  game.settings.register(MODULE.ID, "displayBattleRescost", {
+    name:
+      game.i18n.localize("tokenActionHud.sw25.battletab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayRescost.name"),
+    hint:
+      game.i18n.localize("tokenActionHud.sw25.battletab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayRescost.hint"),
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
     onChange: (value) => {
       coreUpdate(value);
     },
@@ -307,6 +324,23 @@ export function register(coreUpdate) {
       game.i18n.localize("tokenActionHud.sw25.itemtab") +
       " : " +
       game.i18n.localize("tokenActionHud.sw25.settings.displayEffect.hint"),
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: (value) => {
+      coreUpdate(value);
+    },
+  });
+  game.settings.register(MODULE.ID, "displayItemRescost", {
+    name:
+      game.i18n.localize("tokenActionHud.sw25.itemtab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayRescost.name"),
+    hint:
+      game.i18n.localize("tokenActionHud.sw25.itemtab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayRescost.hint"),
     scope: "client",
     config: true,
     type: Boolean,
