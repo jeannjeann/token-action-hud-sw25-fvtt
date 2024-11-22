@@ -1,5 +1,8 @@
 # Token Action HUD Sword World 2.5
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X415YUSP)
+[![OFUSE](https://img.shields.io/badge/OFUSE-9cf.svg?style=for-the-badge)](https://ofuse.me/o?uid=81619)
+
 [ソード・ワールド 2.5](https://foundryvtt.com/packages/sw25)用の「Token Action HUD」システムモジュール
 
 Token Action HUD for [Sword World 2.5](https://foundryvtt.com/packages/sw25) game system
