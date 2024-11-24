@@ -49,6 +49,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           { ...groups.alchemytech, nestId: "feature_alchemytech" },
           { ...groups.phasearea, nestId: "feature_phasearea" },
           { ...groups.tactics, nestId: "feature_tactics" },
+          { ...groups.infusion, nestId: "feature_infusion" },
+          { ...groups.barbarousskill, nestId: "feature_barbarousskill" },
+          { ...groups.essenceweave, nestId: "feature_essenceweave" },
           { ...groups.otherfeature, nestId: "feature_otherfeature" },
         ],
       },
@@ -74,6 +77,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           { ...groups.fairy, nestId: "spell_fairy" },
           { ...groups.druid, nestId: "spell_druid" },
           { ...groups.daemon, nestId: "spell_daemon" },
+          { ...groups.abyssal, nestId: "spell_abyssal" },
         ],
       },
       {

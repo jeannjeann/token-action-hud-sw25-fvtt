@@ -54,12 +54,16 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildInventory("fairy", "fairy");
       this.#buildInventory("druid", "druid");
       this.#buildInventory("daemon", "daemon");
+      this.#buildInventory("abyssal", "abyssal");
       this.#buildInventory("enhancearts", "enhancearts");
       this.#buildInventory("magicalsong", "magicalsong");
       this.#buildInventory("ridingtrick", "ridingtrick");
       this.#buildInventory("alchemytech", "alchemytech");
       this.#buildInventory("phasearea", "phasearea");
       this.#buildInventory("tactics", "tactics");
+      this.#buildInventory("infusion", "infusion");
+      this.#buildInventory("barbarousskill", "barbarousskill");
+      this.#buildInventory("essenceweave", "essenceweave");
       this.#buildInventory("otherfeature", "otherfeature");
       this.#buildInventory("combatability", "combatability");
       this.#buildInventory("raceability", "raceability");
@@ -88,6 +92,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildInventory("fairy", "fairy");
       this.#buildInventory("druid", "druid");
       this.#buildInventory("daemon", "daemon");
+      this.#buildInventory("abyssal", "abyssal");
       this.#buildCombatControl("combatcontrol", "combatcontrol");
       this.#buildLoot("loot", "loot");
       this.#buildEffects();
@@ -341,6 +346,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         "fairy",
         "druid",
         "daemon",
+        "abyssal",
       ];
 
       let sc = false;
@@ -351,6 +357,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       let fr = false;
       let dr = false;
       let dm = false;
+      let ab = false;
       for (const [itemId, itemData] of this.items) {
         const type = itemData.type;
         const typeMap = inventoryMap.get(type) ?? new Map();
@@ -384,6 +391,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
                 break;
               case "daemon":
                 dm = true;
+                break;
+              case "abyssal":
+                ab = true;
                 break;
             }
           }
@@ -454,6 +464,14 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
             if (!dm) break;
             id = mp[i] + "-" + actionTypeId;
             name = coreModule.api.Utils.i18n("SW25.Item.Spell.Daemon");
+            listName = `${actionTypeName ? `${actionTypeName}: ` : ""}${name}`;
+            encodedValue = [actionTypeId, id].join(this.delimiter);
+            actions.push({ id, name, listName, encodedValue });
+            break;
+          case "abyssal":
+            if (!ab) break;
+            id = mp[i] + "-" + actionTypeId;
+            name = coreModule.api.Utils.i18n("SW25.Item.Spell.Abyssal");
             listName = `${actionTypeName ? `${actionTypeName}: ` : ""}${name}`;
             encodedValue = [actionTypeId, id].join(this.delimiter);
             actions.push({ id, name, listName, encodedValue });
@@ -677,9 +695,13 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "alchemytech":
         case "phasearea":
         case "tactics":
+        case "infusion":
+        case "barbarousskill":
+        case "essenceweave":
         case "otherfeature":
           this.displayClickItem = Utils.getSetting("displayFeatureClickItem");
           this.displayMP = Utils.getSetting("displayFeatureMP");
+          this.displayHP = Utils.getSetting("displayFeatureHP");
           this.displayCheck = Utils.getSetting("displayFeatureCheck");
           this.displayPower = Utils.getSetting("displayFeaturePower");
           this.displayEffect = Utils.getSetting("displayFeatureEffect");
@@ -692,6 +714,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "fairy":
         case "druid":
         case "daemon":
+        case "abyssal":
           this.displayClickItem = Utils.getSetting("displaySpellClickItem");
           this.displayMP = Utils.getSetting("displaySpellMP");
           this.displayCheck = Utils.getSetting("displaySpellCheck");
@@ -737,6 +760,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
             case "fairy":
             case "druid":
             case "daemon":
+            case "abyssal":
               groupId = ITEM_TYPE[actionType]?.groupId;
               break;
           }
@@ -794,6 +818,33 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
                   info1,
                 };
                 if (this.displayMP) action.push(usediceAction);
+              }
+            }
+
+            if (itemData.system?.hpcost && baseaction) {
+              if (
+                itemData.system.basehpcost != 0 &&
+                itemData.system.basehpcost != null
+              ) {
+                const usediceActionTypeName = coreModule.api.Utils.i18n(
+                  ACTION_TYPE["hpcost"]
+                );
+                const usediceListName = `${
+                  usediceActionTypeName ? `${usediceActionTypeName}: ` : ""
+                }${name}`;
+                const usediceEncodedValue = ["hpcost", id].join(this.delimiter);
+                const extraname = coreModule.api.Utils.i18n(
+                  ACTION_TYPE["hpcost"]
+                );
+                const info1 = { text: `${name}`, title: "baseitem" };
+                let usediceAction = {
+                  id: `${id}-hpcost`,
+                  name: extraname,
+                  listName: usediceListName,
+                  encodedValue: usediceEncodedValue,
+                  info1,
+                };
+                if (this.displayHP) action.push(usediceAction);
               }
             }
 

@@ -126,6 +126,23 @@ export function register(coreUpdate) {
       coreUpdate(value);
     },
   });
+  game.settings.register(MODULE.ID, "displayFeatureHP", {
+    name:
+      game.i18n.localize("tokenActionHud.sw25.featuretab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayHP.name"),
+    hint:
+      game.i18n.localize("tokenActionHud.sw25.featuretab") +
+      " : " +
+      game.i18n.localize("tokenActionHud.sw25.settings.displayHP.hint"),
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: (value) => {
+      coreUpdate(value);
+    },
+  });
   game.settings.register(MODULE.ID, "displayFeatureCheck", {
     name:
       game.i18n.localize("tokenActionHud.sw25.featuretab") +

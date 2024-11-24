@@ -33,6 +33,10 @@
           "hint": "Choose whether to display direct MP cost items on the HUD",
           "name": "Display MP action"    
         },
+        "displayHP": {
+          "hint": "Choose whether to display direct HP cost items on the HUD",
+          "name": "Display HP action"    
+        },
         "displayRescost": {
           "hint": "Choose whether to display direct Resource cost items on the HUD",
           "name": "Display Cost action"    

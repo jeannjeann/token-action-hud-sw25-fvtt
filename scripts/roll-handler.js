@@ -29,12 +29,16 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         "fairy",
         "druid",
         "daemon",
+        "abyssal",
         "enhancearts",
         "magicalsong",
         "ridingtrick",
         "alchemytech",
         "phasearea",
         "tactics",
+        "infusion",
+        "barbarousskill",
+        "essenceweave",
         "otherfeature",
         "combatability",
         "skill",
@@ -116,12 +120,16 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "fairy":
         case "druid":
         case "daemon":
+        case "abyssal":
         case "enhancearts":
         case "magicalsong":
         case "ridingtrick":
         case "alchemytech":
         case "phasearea":
         case "tactics":
+        case "infusion":
+        case "barbarousskill":
+        case "essenceweave":
         case "otherfeature":
         case "combatability":
         case "skill":
@@ -138,6 +146,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           break;
         case "mpcost":
           this.#handleMpcostAction(event, actor, actionId);
+          break;
+        case "hpcost":
+          this.#handleHpcostAction(event, actor, actionId);
           break;
         case "resourcecost":
           this.#handleResourcecostAction(event, actor, actionId);
@@ -253,6 +264,13 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       const item = actor.items.get(actionId);
       let orgclickitem = item.system.clickitem;
       item.system.clickitem = "mpcost";
+      await item.roll();
+      item.system.clickitem = orgclickitem;
+    }
+    async #handleHpcostAction(event, actor, actionId) {
+      const item = actor.items.get(actionId);
+      let orgclickitem = item.system.clickitem;
+      item.system.clickitem = "hpcost";
       await item.roll();
       item.system.clickitem = orgclickitem;
     }
@@ -601,6 +619,53 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
 
 // _onRoll function
 async function onRoll(dataset, actor) {
+  const targetTokens = game.user.targets;
+  if (dataset.apply == "-" || !dataset.apply || targetTokens.size === 0) {
+    await onRollExec(dataset, actor);
+    return;
+  } else {
+    let label = dataset.label ? `${dataset.label}` : "";
+    const targetRoll = await game.sw25.targetRollDialog(targetTokens, label);
+    if (targetRoll == "cancel") {
+      return;
+    } else if (targetRoll == "once") {
+      await onRollExec(dataset, actor, targetTokens);
+      return;
+    } else if (targetRoll == "individual") {
+      let chatMessageId = [];
+      for (const [index, token] of Array.from(targetTokens).entries()) {
+        const targetToken = new Set([token]);
+        await onRollExec(dataset, actor, targetToken).then((result) => {
+          chatMessageId.push(result.chatMessageId);
+        });
+      }
+
+      // rendar apply all message
+      const speaker = ChatMessage.getSpeaker({ actor: actor });
+      const checktype = dataset.checktype ? dataset.checktype.split(",") : "";
+      let chatData = {
+        speaker: speaker,
+        flavor: `${label} - <b>${game.i18n.localize("SW25.Applyall")}</b>`,
+      };
+      chatData.flags = {
+        targetMessage: chatMessageId,
+      };
+      chatData.content = await renderTemplate(
+        "systems/sw25/templates/roll/roll-applyall.hbs",
+        {
+          apply: dataset.apply,
+          checktype: checktype,
+        }
+      );
+
+      ChatMessage.create(chatData);
+      return;
+    }
+  }
+
+  await onRollExec(dataset, actor);
+}
+async function onRollExec(dataset, actor, targetTokens) {
   // Handle rolls that supply the formula directly.
   if (dataset.roll) {
     const rollData = actor.getRollData();
@@ -653,6 +718,22 @@ async function onRoll(dataset, actor) {
 
     let chatapply = dataset.apply;
     let chatspell = dataset.spell;
+
+    // when selected target
+    let target = null;
+    let targetName = null;
+    if (targetTokens) {
+      const targetArray = Array.from(targetTokens);
+      target = targetArray.map((target) => target.id);
+      let targetNames = targetArray.map((target) => target.document.name);
+      targetName = ``;
+      for (let i = 0; i < targetNames.length; i++) {
+        if (i != 0) targetName = targetName + `<br>`;
+        targetName = targetName + `>>> ${targetNames[i]}`;
+      }
+      targetName = targetName + ``;
+    }
+
     chatData.flags = {
       total: roll.total,
       orgtotal: roll.total,
@@ -662,6 +743,7 @@ async function onRoll(dataset, actor) {
       apply: chatapply,
       spell: chatspell,
       checktype: checktype,
+      target,
     };
 
     chatData.content = await renderTemplate(
@@ -676,17 +758,68 @@ async function onRoll(dataset, actor) {
         spell: chatspell,
         checktype: checktype,
         resusetext: chatresuse,
+        targetName,
       }
     );
 
-    ChatMessage.create(chatData);
+    let chatMessageId;
+    await ChatMessage.create(chatData).then((chatMessage) => {
+      chatMessageId = chatMessage.id;
+    });
 
-    return roll;
+    return { roll, chatMessageId };
   }
 }
 
 // _onPowerRoll function
 async function onPowerRoll(dataset, actor) {
+  const targetTokens = game.user.targets;
+  if (dataset.apply == "-" || !dataset.apply || targetTokens.size === 0) {
+    await onPowerRollExec(dataset, actor);
+    return;
+  } else {
+    let label = dataset.label ? `${dataset.label}` : "";
+    const targetRoll = await game.sw25.targetRollDialog(targetTokens, label);
+    if (targetRoll == "cancel") {
+      return;
+    } else if (targetRoll == "once") {
+      await onPowerRollExec(dataset, actor, targetTokens);
+      return;
+    } else if (targetRoll == "individual") {
+      let chatMessageId = [];
+      for (const [index, token] of Array.from(targetTokens).entries()) {
+        const targetToken = new Set([token]);
+        await onPowerRollExec(dataset, actor, targetToken).then((result) => {
+          chatMessageId.push(result.chatMessageId);
+        });
+      }
+
+      // rendar apply all message
+      const speaker = ChatMessage.getSpeaker({ actor: actor });
+      const powertype = dataset.powertype ? dataset.powertype.split(",") : "";
+      let chatData = {
+        speaker: speaker,
+        flavor: `${label} - <b>${game.i18n.localize("SW25.Applyall")}</b>`,
+      };
+      chatData.flags = {
+        targetMessage: chatMessageId,
+      };
+      chatData.content = await renderTemplate(
+        "systems/sw25/templates/roll/roll-applyall.hbs",
+        {
+          apply: dataset.apply,
+          powertype: powertype,
+        }
+      );
+
+      ChatMessage.create(chatData);
+      return;
+    }
+  }
+
+  await onPowerRollExec(dataset, actor);
+}
+async function onPowerRollExec(dataset, actor, targetTokens) {
   const formula = dataset.roll;
   const powertype = dataset.powertype ? dataset.powertype.split(",") : "";
   const powertable = dataset.pt;
@@ -757,6 +890,21 @@ async function onPowerRoll(dataset, actor) {
   if (roll.cValue == 100 || chatExtraRoll == null) shownoc = false;
   let chatapply = dataset.apply;
 
+  // when selected target
+  let target = null;
+  let targetName = null;
+  if (targetTokens) {
+    const targetArray = Array.from(targetTokens);
+    target = targetArray.map((target) => target.id);
+    let targetNames = targetArray.map((target) => target.document.name);
+    targetName = ``;
+    for (let i = 0; i < targetNames.length; i++) {
+      if (i != 0) targetName = targetName + `<br>`;
+      targetName = targetName + `>>> ${targetNames[i]}`;
+    }
+    targetName = targetName + ``;
+  }
+
   chatData.flags = {
     formula: chatFormula,
     tooltip: await roll.fakeResult.getTooltip(),
@@ -779,6 +927,7 @@ async function onPowerRoll(dataset, actor) {
     shownoc: shownoc,
     apply: chatapply,
     powertype: powertype,
+    target,
   };
 
   chatData.content = await renderTemplate(
@@ -802,12 +951,16 @@ async function onPowerRoll(dataset, actor) {
       shownoc: shownoc,
       apply: chatapply,
       powertype: powertype,
+      targetName,
     }
   );
 
-  ChatMessage.create(chatData);
+  let chatMessageId;
+  await ChatMessage.create(chatData).then((chatMessage) => {
+    chatMessageId = chatMessage.id;
+  });
 
-  return roll;
+  return { roll, chatMessageId };
 }
 
 // _onApplyEffect function
