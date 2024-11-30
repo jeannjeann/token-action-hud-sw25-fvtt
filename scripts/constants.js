@@ -64,6 +64,7 @@ export const ACTION_TYPE = {
   mpcost: "SW25.Mp",
   hpcost: "SW25.Hp",
   resourcecost: "SW25.Cost",
+  actionroll: "SW25.ActionRoll",
 };
 
 /**
@@ -260,6 +261,11 @@ export const GROUP = {
     name: "SW25.Monster.Loot",
     type: "system",
   },
+  actionroll: {
+    id: "actionroll",
+    name: "SW25.ActionTable",
+    type: "system",
+  },
   token: {
     id: "token",
     name: "tokenActionHud.token",
@@ -311,6 +317,7 @@ export const ITEM_TYPE = {
   combatcontrol: { groupId: "combatcontrol" },
   loot: { groupId: "loot" },
   monsterability: { groupId: "monsterability" },
+  actionroll: { groupId: "actionroll" },
   utility: { groupId: "utility" },
   effect: { groupId: "effect" },
 };

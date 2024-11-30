@@ -31,6 +31,8 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         this.#buildCharacterActions();
       } else if (this.actorType === "monster") {
         this.#buildMonsterActions();
+      } else if (this.actorType === "npc") {
+        this.#buildNpcActions();
       } else if (!this.actor) {
         this.#buildMultipleTokenActions();
       }
@@ -41,41 +43,45 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      * @private
      */
     #buildCharacterActions() {
-      this.#buildInventory("weapon", "weapon");
-      this.#buildInventory("battleweapon", "battleweapon");
-      this.#buildInventory("armor", "armor");
-      this.#buildInventory("accessory", "accessory");
-      this.#buildInventory("item", "item");
-      this.#buildInventory("sorcerer", "sorcerer");
-      this.#buildInventory("conjurer", "conjurer");
-      this.#buildInventory("wizard", "wizard");
-      this.#buildInventory("priest", "priest");
-      this.#buildInventory("magitech", "magitech");
-      this.#buildInventory("fairy", "fairy");
-      this.#buildInventory("druid", "druid");
-      this.#buildInventory("daemon", "daemon");
-      this.#buildInventory("abyssal", "abyssal");
-      this.#buildInventory("enhancearts", "enhancearts");
-      this.#buildInventory("magicalsong", "magicalsong");
-      this.#buildInventory("ridingtrick", "ridingtrick");
-      this.#buildInventory("alchemytech", "alchemytech");
-      this.#buildInventory("phasearea", "phasearea");
-      this.#buildInventory("tactics", "tactics");
-      this.#buildInventory("infusion", "infusion");
-      this.#buildInventory("barbarousskill", "barbarousskill");
-      this.#buildInventory("essenceweave", "essenceweave");
-      this.#buildInventory("otherfeature", "otherfeature");
-      this.#buildInventory("combatability", "combatability");
-      this.#buildInventory("raceability", "raceability");
-      this.#buildCheck("check", "check");
-      this.#buildCheck("battlecheck", "battlecheck");
-      this.#buildSkill("skill", "skill");
-      this.#buildBattle("battle", "battle");
-      this.#buildMagicPower("magicpower", "magicpower");
-      this.#buildResource("resource", "resource");
-      this.#buildCombatControl("combatcontrol", "combatcontrol");
-      this.#buildUtility("utility", "utility");
-      this.#buildEffects();
+      if (!this.actor.system.toFellow) {
+        this.#buildInventory("weapon", "weapon");
+        this.#buildInventory("battleweapon", "battleweapon");
+        this.#buildInventory("armor", "armor");
+        this.#buildInventory("accessory", "accessory");
+        this.#buildInventory("item", "item");
+        this.#buildInventory("sorcerer", "sorcerer");
+        this.#buildInventory("conjurer", "conjurer");
+        this.#buildInventory("wizard", "wizard");
+        this.#buildInventory("priest", "priest");
+        this.#buildInventory("magitech", "magitech");
+        this.#buildInventory("fairy", "fairy");
+        this.#buildInventory("druid", "druid");
+        this.#buildInventory("daemon", "daemon");
+        this.#buildInventory("abyssal", "abyssal");
+        this.#buildInventory("enhancearts", "enhancearts");
+        this.#buildInventory("magicalsong", "magicalsong");
+        this.#buildInventory("ridingtrick", "ridingtrick");
+        this.#buildInventory("alchemytech", "alchemytech");
+        this.#buildInventory("phasearea", "phasearea");
+        this.#buildInventory("tactics", "tactics");
+        this.#buildInventory("infusion", "infusion");
+        this.#buildInventory("barbarousskill", "barbarousskill");
+        this.#buildInventory("essenceweave", "essenceweave");
+        this.#buildInventory("otherfeature", "otherfeature");
+        this.#buildInventory("combatability", "combatability");
+        this.#buildInventory("raceability", "raceability");
+        this.#buildCheck("check", "check");
+        this.#buildCheck("battlecheck", "battlecheck");
+        this.#buildSkill("skill", "skill");
+        this.#buildBattle("battle", "battle");
+        this.#buildMagicPower("magicpower", "magicpower");
+        this.#buildResource("resource", "resource");
+        this.#buildCombatControl("combatcontrol", "combatcontrol");
+        this.#buildUtility("utility", "utility");
+        this.#buildEffects();
+      } else {
+        this.#buildActionRoll("actionroll", "actionroll");
+      }
     }
 
     /**
@@ -96,6 +102,12 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       this.#buildCombatControl("combatcontrol", "combatcontrol");
       this.#buildLoot("loot", "loot");
       this.#buildEffects();
+    }
+
+    #buildNpcActions() {
+      if (this.actor.system.toFellow) {
+        this.#buildActionRoll("actionroll", "actionroll");
+      }
     }
 
     /**
@@ -954,6 +966,40 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         // TAH Core method to add actions to the action list
         this.addActions(actions, groupData);
       }
+    }
+
+    /**
+     * Build actionroll
+     * @private
+     */
+    async #buildActionRoll(actionType, group) {
+      const actionTypeId = actionType;
+      const actionTypeName = coreModule.api.Utils.i18n(
+        ACTION_TYPE[actionTypeId]
+      );
+      const groupId = group;
+      const groupData = {
+        id: groupId,
+        type: "system",
+        settings: { showTitle: false },
+      };
+      const actions = [];
+
+      // add ActionRoll
+      const idActionRoll = "actionroll";
+      const nameActionRoll = coreModule.api.Utils.i18n("SW25.ActionRoll");
+      const listNameActionRoll = actionTypeName + " : " + nameActionRoll;
+      const encodedValueActionRoll = [actionTypeId, idActionRoll].join(
+        this.delimiter
+      );
+      actions.push({
+        id: idActionRoll,
+        name: nameActionRoll,
+        listName: listNameActionRoll,
+        encodedValue: encodedValueActionRoll,
+      });
+
+      this.addActions(actions, groupData);
     }
 
     /**

@@ -107,6 +107,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         groups: [
           { ...groups.combatControl, nestId: "utility_combatcontrol" },
           { ...groups.loot, nestId: "utility_loot" },
+          { ...groups.actionroll, nestId: "utility_actionroll" },
           { ...groups.token, nestId: "utility_token" },
           { ...groups.utility, nestId: "utility_utility" },
         ],

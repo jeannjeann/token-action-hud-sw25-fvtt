@@ -185,6 +185,12 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         case "loot":
           this.#handleLootAction(event, token, actionId);
           break;
+        case "actionroll":
+          this.#handleActionRollAction(event, token, actionId);
+          break;
+        case "loot":
+          this.#handleLootAction(event, token, actionId);
+          break;
         case "effect":
           await this.#toggleEffect(event, actor, actionId);
           break;
@@ -571,6 +577,22 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      */
     async #handleLootAction(event, actor, actionId) {
       await game.sw25.lootRoll(actor.actor);
+    }
+
+    /**
+     * Handle ActionRoll action
+     * @private
+     * @param {object} event    The event
+     * @param {object} actor    The actor
+     * @param {string} actionId The action id
+     */
+    async #handleActionRollAction(event, actor, actionId) {
+      const element = {
+        dataset: {
+          result: "",
+        },
+      };
+      await game.sw25.actionRoll(element, actor.actor);
     }
 
     /**
