@@ -89,19 +89,23 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      * @private
      */
     #buildMonsterActions() {
-      this.#buildMonsterAbility("monsterability", "monsterability");
-      this.#buildInventory("sorcerer", "sorcerer");
-      this.#buildInventory("conjurer", "conjurer");
-      this.#buildInventory("wizard", "wizard");
-      this.#buildInventory("priest", "priest");
-      this.#buildInventory("magitech", "magitech");
-      this.#buildInventory("fairy", "fairy");
-      this.#buildInventory("druid", "druid");
-      this.#buildInventory("daemon", "daemon");
-      this.#buildInventory("abyssal", "abyssal");
-      this.#buildCombatControl("combatcontrol", "combatcontrol");
-      this.#buildLoot("loot", "loot");
-      this.#buildEffects();
+      if (!this.actor.system.toFellow) {
+        this.#buildMonsterAbility("monsterability", "monsterability");
+        this.#buildInventory("sorcerer", "sorcerer");
+        this.#buildInventory("conjurer", "conjurer");
+        this.#buildInventory("wizard", "wizard");
+        this.#buildInventory("priest", "priest");
+        this.#buildInventory("magitech", "magitech");
+        this.#buildInventory("fairy", "fairy");
+        this.#buildInventory("druid", "druid");
+        this.#buildInventory("daemon", "daemon");
+        this.#buildInventory("abyssal", "abyssal");
+        this.#buildCombatControl("combatcontrol", "combatcontrol");
+        this.#buildLoot("loot", "loot");
+        this.#buildEffects();
+      } else {
+        this.#buildActionRoll("actionroll", "actionroll");
+      }
     }
 
     #buildNpcActions() {

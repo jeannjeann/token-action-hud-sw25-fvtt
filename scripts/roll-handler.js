@@ -993,9 +993,15 @@ async function onApplyEffect(actor, actionId) {
   const targetActorName = [];
   const transferEffectName = [];
   const targetedToken = game.user.targets;
+
+  // if no target,show dialog
   if (targetedToken.size === 0) {
-    ui.notifications.warn(game.i18n.localize("SW25.Notargetwarn"));
-    return;
+    const title = `${item.name} (${game.i18n.localize("SW25.Effectslong")})`;
+    const selectedTokens = await game.sw25.targetSelectDialog(title);
+    game.user.updateTokenTargets(selectedTokens.map((token) => token.id));
+    if (!selectedTokens) {
+      return;
+    }
   }
 
   // Target Actor
