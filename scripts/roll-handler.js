@@ -290,7 +290,12 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
     async #handleMonUsediceAction(event, actor, actionId, actionTypeId) {
       const item = actor.items.get(actionId);
       const itemData = item.system;
-      let roll, label, apply, checktype, resistname=null, resistresult=null;
+      let roll,
+        label,
+        apply,
+        checktype,
+        resistname = null,
+        resistresult = null;
       switch (actionTypeId) {
         case "usedice1":
           roll = itemData.checkformula1 + "+" + itemData.checkbase1;
@@ -301,7 +306,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
             if (item.system.dice1?.resist?.type == "input") {
               resistname = item.system.dice1?.resist?.input;
             } else {
-              resistname = game.i18n.localize(`SW25.Resist.Check.${item.system.dice1.resist.type}`);
+              resistname = game.i18n.localize(
+                `SW25.Resist.Check.${item.system.dice1.resist.type}`
+              );
             }
           }
           if (item.system.dice1 && item.system.dice1?.resist?.result != "-") {
@@ -319,7 +326,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
             if (item.system.dice2?.resist?.type == "input") {
               resistname = item.system.dice2?.resist?.input;
             } else {
-              resistname = game.i18n.localize(`SW25.Resist.Check.${item.system.dice2.resist.type}`);
+              resistname = game.i18n.localize(
+                `SW25.Resist.Check.${item.system.dice2.resist.type}`
+              );
             }
           }
           if (item.system.dice2 && item.system.dice2?.resist?.result != "-") {
@@ -337,7 +346,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
             if (item.system.dice3?.resist?.type == "input") {
               resistname = item.system.dice3?.resist?.input;
             } else {
-              resistname = game.i18n.localize(`SW25.Resist.Check.${item.system.dice3.resist.type}`);
+              resistname = game.i18n.localize(
+                `SW25.Resist.Check.${item.system.dice3.resist.type}`
+              );
             }
           }
           if (item.system.dice3 && item.system.dice3?.resist?.result != "-") {
@@ -347,10 +358,12 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           }
           break;
       }
-      let resist = resistname ? {
-        name: resistname,
-        result: resistresult,
-      } : null;
+      let resist = resistname
+        ? {
+            name: resistname,
+            result: resistresult,
+          }
+        : null;
       const dataset = { roll, label, apply, checktype, resist };
       await onRoll(dataset, actor);
     }
@@ -441,7 +454,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           resusequantity = actorData.resusequantity;
           resist = {
             name: game.i18n.localize("SW25.Resist.Check.Dodge"),
-            result: "disappear"
+            result: "disappear",
           };
           break;
         case "power":
@@ -666,9 +679,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       } else if (effect.parent?.isOwner) {
         // item effect
         if (isRightClick) {
-          ui.notifications.warn(
-            "Cannot delete an effect embedded in an item from the HUD."
-          );
+          //ui.notifications.warn("Cannot delete an effect embedded in an item from the HUD.");
           return;
         }
         await effect.update({ disabled: !effect.disabled });
@@ -716,7 +727,7 @@ async function onRoll(dataset, actor) {
       chatData.flags = {
         sw25: {
           targetMessage: chatMessageId,
-        }
+        },
       };
       chatData.content = await renderTemplate(
         "systems/sw25/templates/roll/roll-applyall.hbs",
@@ -818,7 +829,7 @@ async function onRollExec(dataset, actor, targetTokens) {
         target,
         targetName: targetName,
         resist: resist,
-      }
+      },
     };
 
     chatData.content = await renderTemplate(
@@ -880,7 +891,7 @@ async function onPowerRoll(dataset, actor) {
       chatData.flags = {
         sw25: {
           targetMessage: chatMessageId,
-        }
+        },
       };
       chatData.content = await renderTemplate(
         "systems/sw25/templates/roll/roll-applyall.hbs",
@@ -1007,7 +1018,7 @@ async function onPowerRollExec(dataset, actor, targetTokens) {
       apply: chatapply,
       powertype: powertype,
       target,
-    }
+    },
   };
 
   chatData.content = await renderTemplate(
