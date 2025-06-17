@@ -603,30 +603,28 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      * @param {string} actionId The action id
      */
     async #toggleEffect(event, actor, actionId) {
-      const effects =
-        "find" in actor.effects.entries ? actor.effects.entries : actor.effects;
-      let effect = effects.find((effect) => effect.id === actionId);
-
-      // only allow deletion if effect is directly on this actor
-      let internalEffect = true;
-
-      // if the effect isn't directly on the actor, search all applicable effects for it
-      if (!effect) {
-        internalEffect = false;
-        for (const e of actor.allApplicableEffects()) {
-          if (e.id === actionId) {
-            effect = e;
-          }
-        }
-      }
-
+      const effect = [...actor.allApplicableEffects()].find(
+        (e) => e.id === actionId
+      );
       if (!effect) return;
 
       const isRightClick = this.isRightClick(event);
 
-      if (isRightClick && internalEffect) {
-        await effect.delete();
-      } else {
+      if (effect.parent === actor) {
+        // actor effect
+        if (isRightClick) {
+          await effect.delete();
+        } else {
+          await effect.update({ suppressed: !effect.suppressed });
+        }
+      } else if (effect.parent?.isOwner) {
+        // item effect
+        if (isRightClick) {
+          ui.notifications.warn(
+            "Cannot delete an effect embedded in an item from the HUD."
+          );
+          return;
+        }
         await effect.update({ disabled: !effect.disabled });
       }
 
@@ -1026,8 +1024,8 @@ async function onApplyEffect(actor, actionId) {
   if (game.user.isGM) {
     targetActors.forEach((targetActor) => {
       targetEffects.forEach((effect) => {
-        const transferEffect = duplicate(effect);
-        transferEffect.disabled = false;
+        const transferEffect = foundry.utils.duplicate(effect);
+        transferEffect.suppressed = false;
         transferEffect.sourceName = orgActor;
         targetActor.createEmbeddedDocuments("ActiveEffect", [transferEffect]);
       });

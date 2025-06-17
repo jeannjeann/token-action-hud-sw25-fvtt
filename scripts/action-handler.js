@@ -1246,11 +1246,9 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         `${coreModule.api.Utils.i18n(ACTION_TYPE[actionType])}: ` ?? "";
       const info1 = { text: entity.parent.name, title: "parent" };
       const listName = `${actionTypeName}${name}(${entity.parent.name})`;
-      let cssClass = "";
-      if (Object.hasOwn(entity, "disabled")) {
-        const active = !entity.disabled ? " active" : "";
-        cssClass = `toggle${active}`;
-      }
+      const isActive = !entity.isSuppressed && !entity.disabled;
+      const active = isActive ? " active" : "";
+      const cssClass = `toggle${active}`;
       const encodedValue = [actionType, id].join(this.delimiter);
       return {
         id,
