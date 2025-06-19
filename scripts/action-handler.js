@@ -17,8 +17,12 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      */ a;
     async buildSystemActions(groupIds) {
       // Set actor and token variables
-      this.actors = !this.actor ? this._getActors() : [this.actor];
-      this.actorType = this.actor?.type;
+      const characterActors = this.actors.filter(
+        (actor) => actor.type === "character"
+      );
+      if (characterActors.length === 0) return;
+      this.actor = characterActors[0];
+      this.actorType = this.actor.type;
 
       // Set items variable
       if (this.actor) {

@@ -13,7 +13,14 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      * @param {string} encodedValue The encoded value
      */
     async handleActionClick(event, encodedValue) {
-      const [actionTypeId, actionId] = encodedValue.split("|");
+      const [actionTypeId, actionId] = encodedValue.split(this.delimiter);
+
+      // Core actions
+      const coreActions = ["token"];
+      if (coreActions.includes(actionTypeId)) {
+        super.handleActionClick(event, encodedValue);
+        return;
+      }
 
       const renderable = [
         "weapon",
@@ -67,7 +74,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
         return;
       }
 
-      const controlledTokens = canvas.tokens.controlled.filter((token) =>
+      const controlledTokens = (this.tokens ?? []).filter((token) =>
         knownCharacters.includes(token.actor?.type)
       );
 
@@ -667,14 +674,14 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
       );
       if (!effect) return;
 
-      const isRightClick = this.isRightClick(event);
+      const isRightClick = event.button === 2;
 
       if (effect.parent === actor) {
         // actor effect
         if (isRightClick) {
           await effect.delete();
         } else {
-          await effect.update({ suppressed: !effect.suppressed });
+          await effect.update({ disabled: !effect.disabled });
         }
       } else if (effect.parent?.isOwner) {
         // item effect
@@ -745,7 +752,6 @@ async function onRoll(dataset, actor) {
   await onRollExec(dataset, actor);
 }
 async function onRollExec(dataset, actor, targetTokens) {
-  console.log(dataset);
   // Handle rolls that supply the formula directly.
   if (dataset.roll) {
     const rollData = actor.getRollData();
@@ -787,7 +793,6 @@ async function onRollExec(dataset, actor, targetTokens) {
       speaker: ChatMessage.getSpeaker({ actor: actor }),
       flavor: label,
       rollMode: game.settings.get("core", "rollMode"),
-      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
       rolls: [roll],
     };
 
@@ -966,7 +971,6 @@ async function onPowerRollExec(dataset, actor, targetTokens) {
     speaker: ChatMessage.getSpeaker({ actor: actor }),
     flavor: chatLabel,
     rollMode: game.settings.get("core", "rollMode"),
-    type: CONST.CHAT_MESSAGE_TYPES.ROLL,
     rolls: [roll.fakeResult],
   };
 

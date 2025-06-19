@@ -9,11 +9,11 @@
   ],
   "url": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt",
   "flags": {},
-  "version": "1.9.0",
+  "version": "2.0.0",
   "compatibility": {
-    "minimum": "11",
+    "minimum": "12",
     "verified": "12.343",
-    "maximum": "12"
+    "maximum": "13"
   },
   "esmodules": [
     "./scripts/init.js"
@@ -55,9 +55,9 @@
         "type": "module",
         "compatibility": [
           {
-            "minimum": "1.5.0",
-            "maximum": "1.5",
-            "verified": "1.5.7"
+            "minimum": "2.0.0",
+            "maximum": "2.0",
+            "verified": "2.0.15"
           }
         ]
       }
@@ -68,8 +68,8 @@
     }
   },
   "socket": false,
-  "manifest": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/1.9.0/module.json",
-  "download": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/1.9.0/module.zip",
+  "manifest": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/2.0.0/module.json",
+  "download": "https://github.com/jeannjeann/token-action-hud-sw25-fvtt/releases/download/2.0.0/module.zip",
   "readme": "README.md",
   "protected": false,
   "coreTranslation": false,

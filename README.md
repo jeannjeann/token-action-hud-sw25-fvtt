@@ -35,6 +35,12 @@ This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 In
 
 # CHANGELOG
 
+## 2.0.0
+- Support Foundry VTT v12 and v13
+- Support Sword World 2.5 Game system v2.1.1
+- Token Action HUD Core v2.0.x compatible (don't work with v1.5.x)
+- bug fix
+
 ## 1.9.0
 - Support Foundry VTT v12
 - Support Sword World 2.5 Game system v1.4.1
