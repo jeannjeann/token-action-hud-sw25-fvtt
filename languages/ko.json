@@ -1,0 +1,47 @@
+{
+  "tokenActionHud": {
+    "sw25": {
+      "battletab": "전투 탭",
+      "featuretab": "특기 등",
+      "spelltab": "마법 탭",
+      "itemtab": "소지품 탭",
+      "monsterabilitytab": "마물능력 탭",
+      "group": "그룹",
+      "battleweapon": "무기 (전투 탭)",
+      "battlecheck": "판정정（전투 탭）",
+      "combatcontrol": "전투 조작",
+      "startturn": "턴 개시",
+      "endturn": "턴 종료",
+      "settings": {
+        "displayClickItem": {
+          "hint": "메인 액션 (아이콘 클릭 시 작동)을 HUD에 표시",
+          "name": "메인 액션 표시"    
+        },
+        "displayCheck": {
+          "hint": "판정 직접 실행 액션을 HUD에 표시",
+          "name": "판정 액션 표시"    
+        },
+        "displayPower": {
+          "hint": "위력 직접 실행 액션을 HUD에 표시",
+          "name": "위력 액션 표시"    
+        },
+        "displayEffect": {
+          "hint": "버프・디버프 직접 실행 액션을 HUD에 표시",
+          "name": "버프・디버프 액션 표시"    
+        },
+        "displayMP": {
+          "hint": "MP 소비의 직접 실행 작업을 HUD에 표시하다",
+          "name": "MP 소비 액션 표시"    
+        },
+        "displayHP": {
+          "hint": "HP 소비의 직접 실행 작업을 HUD에 표시하다",
+          "name": "HP 소비 액션 표시"    
+        },
+        "displayRescost": {
+          "hint": "자원 소비의 직접 실행 작업을 HUD에 표시하다",
+          "name": "자원 소비 액션 표시"    
+        }
+      }
+    }
+  }
+}
