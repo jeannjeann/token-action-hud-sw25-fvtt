@@ -17,13 +17,13 @@ Token Action HUD for [Sword World 2.5](https://foundryvtt.com/packages/sw25) gam
 
 「Token Action HUD」の使い方　[How to Use Token Action HUD (英語サイト)](https://github.com/Larkinabout/fvtt-token-action-hud-core/wiki/How-to-Use-Token-Action-HUD)
 
-このモジュールは日本語と英語をサポートしています。
+このモジュールは日本語と英語と韓国語をサポートしています。
 
 プルリクエストは大歓迎です。
 
 For a guide on using Token Action HUD, go to: [How to Use Token Action HUD](https://github.com/Larkinabout/fvtt-token-action-hud-core/wiki/How-to-Use-Token-Action-HUD)
 
-This module supports Japanese, English.
+This module supports Japanese, English and Korean.
 
 Pull requests are welcome. 
 
@@ -34,6 +34,9 @@ This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 In
 本作は、「グループSNE」および「株式会社KADOKAWA」が権利を有する『ソード・ワールド2.0/2.5』の、二次創作です。 (C)GroupSNE (C)KADOKAWA
 
 # CHANGELOG
+
+## 2.0.1
+- Korean supportt  by [CC8788](https://github.com/CC8788)
 
 ## 2.0.0
 - Support Foundry VTT v12 and v13
